@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class WorkController extends Controller
 {
@@ -27,7 +29,7 @@ class WorkController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/works/create');
     }
 
     /**
@@ -38,7 +40,24 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        $formData = $request->all();
+
+        $formData['slug']= Str::slug($formData['title'], '-');
+
+        $work = new Work();
+
+        $work->title = $formData['title'];
+        $work->description = $formData['description'];
+        $work->image = $formData['image'];
+        $work->date = $formData['date'];
+        $work->git_url = $formData['git_url'];
+        $work->slug = $formData['slug'];
+
+        $work->save();
+
+        return redirect()->route('admin.works.index');
     }
 
     /**
@@ -84,5 +103,39 @@ class WorkController extends Controller
     public function destroy(Work $work)
     {
         //
+    }
+
+    private function validation($request){
+        
+
+        $formData = $request->all();
+
+        $validator = Validator::make($formData,
+
+        [
+            'title'=> 'required|min:2|max:50|unique:works,title',
+            'description'=> 'required|min:2',
+            'image'=> 'required|min:2',
+            'date'=> 'nullable',
+            'git_url'=> 'required|min:2',
+        ],
+        
+        [
+            'title.required'=> 'Questo campo non può essere lascaito vuoto',
+            'title.min'=> 'Questo campo deve avere minimo 2 caratter',
+            'title.max'=> 'Questo campo può avere massimo 50 caratteri',
+            'title.unique'=> 'Questo campo è già esistente',
+            'description.required'=> 'Questo campo non può essere lascaito vuoto',
+            'description.min'=> 'Questo campo deve avere minimo 2 caratter',
+            'image.required'=> 'Questo campo non può essere lascaito vuoto',
+            'image.min'=> 'Questo campo deve avere minimo 2 caratter',
+            'git_url.required'=> 'Questo campo non può essere lascaito vuoto',
+            'git_url.min'=> 'Questo campo deve avere minimo 2 caratter',
+            
+            
+            
+        ])->validate();
+
+        return $validator;
     }
 }
