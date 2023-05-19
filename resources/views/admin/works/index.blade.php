@@ -16,8 +16,20 @@
           <li class="list-group-item"><b>Date: </b>{{$work->date}}</li>
         </ul>
         <div class="card-body text-center">
-          <a href="{{$work->git_url}}" ><i class="fa-brands fa-github fs-1 "></i></a>
-          
+          <a href="{{$work->git_url}}" ><i class="fa-brands fa-github fs-1 "></i></a> 
+        </div>
+        <div class="card-body text-center fs-3 d-flex justify-content-center gap-3">
+          <a href="{{route('admin.works.edit', $work)}}" ><i class="fa-regular fa-pen-to-square text-success"></i></a>
+          <form id="delete" action="{{route('admin.works.destroy', $work)}}" method="post">
+            @csrf
+            @method('DELETE')
+
+              <button class="-btn-" type="submit"><i class="fa-regular fa-trash-can text-danger"></i></i></button>
+              {{-- <a href="" onclick="document.getElementById('delete').submit();"><i class="fa-regular fa-trash-can text-danger"></i></a> --}}
+          </form>
+
+        
+
         </div>
       </div>
 

@@ -79,7 +79,7 @@ class WorkController extends Controller
      */
     public function edit(Work $work)
     {
-        //
+        return view('admin/works/edit', compact('work'));
     }
 
     /**
@@ -91,7 +91,13 @@ class WorkController extends Controller
      */
     public function update(Request $request, Work $work)
     {
-        //
+        $formData= $request->all();
+
+        $work->update($formData);
+
+        $work->save();
+
+        return redirect()->route('admin.works.index');
     }
 
     /**
@@ -102,7 +108,9 @@ class WorkController extends Controller
      */
     public function destroy(Work $work)
     {
-        //
+        $work->delete();
+
+        return redirect()->route('admin.works.index');
     }
 
     private function validation($request){

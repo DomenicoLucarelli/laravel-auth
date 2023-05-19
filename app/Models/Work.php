@@ -9,4 +9,5 @@ class Work extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title','description','image','date','git_url'];
 }

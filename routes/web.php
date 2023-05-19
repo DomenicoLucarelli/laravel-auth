@@ -29,7 +29,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function() {
 
     
-    Route::resource('works', WorkController::class)->parameters(['work'=> 'work:slug']);
+    Route::resource('works', WorkController::class)->parameters(['works'=> 'work:slug']);
 
     
 });
