@@ -15,7 +15,9 @@ class WorkController extends Controller
      */
     public function index()
     {
-        //
+        $works= Work::all();
+
+        return view('admin/works/index', compact('works'));
     }
 
     /**
